@@ -2,7 +2,6 @@ package main;
 
 import javafx.util.Pair;
 
-@SuppressWarnings("restriction")
 public class TextPair extends Pair<String, String> {
 
 	/**

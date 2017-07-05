@@ -4,13 +4,10 @@ import static main.LogFieldFormatter.format;
 import static main.LogFieldFormatter.pair;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -71,11 +68,13 @@ public class StockUpdater extends Thread {
 
 			int queryCounter = 0;
 
+			logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "stock")),
+					"All datasets are being updated");
+
 			while (queryCounter < this.nytimesCompanyList.size()) {
 
 				/*
-				 * try { out= new
-				 * FileOutputStream("/home/oylum/Desktop/stock1/stock_output"+
+				 * try { out= new FileOutputStream("/home/oylum/Desktop/stock1/stock_output"+
 				 * queryCounter+".txt",true); pSOut=new PrintStream(out);
 				 * 
 				 * } catch (FileNotFoundException e) {
@@ -107,6 +106,8 @@ public class StockUpdater extends Thread {
 					}
 					stock++;
 					storeList.get(0).add(new Triple(subject, firstPredicate, NodeFactoryExtra.intToNode(stock)));
+					logger.debug(format(pair("time", LocalDateTime.now()), pair("company", subject.getURI()),
+							pair("dataset", "stock")), "Company data has been updated");
 				}
 
 				logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "stock")),
@@ -114,6 +115,9 @@ public class StockUpdater extends Thread {
 				Thread.sleep(180000);
 
 			}
+
+			logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "stock")),
+					"All datasets has been updated");
 
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
