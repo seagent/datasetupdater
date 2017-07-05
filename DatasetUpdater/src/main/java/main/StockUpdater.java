@@ -43,8 +43,7 @@ public class StockUpdater extends Thread {
 		storeList.add(new VirtGraph("http://stockmarket.com", "jdbc:virtuoso://localhost:1111", "dba", "dba"));
 
 		@SuppressWarnings("resource")
-		BufferedReader br = new BufferedReader(
-				new FileReader("/home/oylum/Desktop/workspace/SemanticCartago2/organisation_data.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("src/main/resources/organisation_data.txt"));
 
 		String line;
 		int blankPosition;

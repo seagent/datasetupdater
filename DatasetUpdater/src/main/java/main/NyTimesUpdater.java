@@ -34,9 +34,8 @@ public class NyTimesUpdater extends Thread {
 
 	private void init() throws IOException {
 
-		//FIXME: organization data resources'ın altına eklenecek
 		BufferedReader br = new BufferedReader(
-				new FileReader("/home/oylum/Desktop/workspace/SemanticCartago2/organisation_data.txt"));
+				new FileReader("src/main/resources/organisation_data.txt"));
 
 		String line;
 		int blankPosition;
