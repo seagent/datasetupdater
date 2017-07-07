@@ -68,8 +68,8 @@ public class NyTimesUpdater extends Thread {
 				queryCounter++;
 				// TODO: Count sorgusu burada sisteme atılacak
 
-				// FIXME: article count URI ile değiştirilecek
-				Node firstPredicate = Node.createURI("http://articlecount.com/predicate");
+				
+				Node firstPredicate = Node.createURI("http://data.nytimes.com/elements/associated_article_count");
 				int articleCount = 0;
 				for (int i = 0; i < this.nytimesCompanyList.size(); i++) {
 
