@@ -27,8 +27,8 @@ public class NyTimesUpdater extends Thread {
 	ArrayList<String> dbpediaCompanyList = new ArrayList<String>();
 	ArrayList<String> nytimesCompanyList = new ArrayList<String>();
 
-	// FIXME: nytimes URI doğrusuyla değiştirilecek
-	VirtGraph store = new VirtGraph("http://nytimes.com", "jdbc:virtuoso://localhost:1111", "dba", "dba");
+	// FIXME: nytimes URI doğrusuyla değiştirildi-denenecek
+	VirtGraph store = new VirtGraph("nytimes", "jdbc:virtuoso://localhost:1111", "dba", "dba");
 
 	private Logger logger = LoggerFactory.getLogger(NyTimesUpdater.class);
 
