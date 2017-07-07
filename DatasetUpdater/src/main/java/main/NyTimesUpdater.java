@@ -22,13 +22,14 @@ import virtuoso.jena.driver.VirtGraph;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 
+
 public class NyTimesUpdater extends Thread {
 
 	ArrayList<String> dbpediaCompanyList = new ArrayList<String>();
 	ArrayList<String> nytimesCompanyList = new ArrayList<String>();
 
 	// FIXME: nytimes URI doğrusuyla değiştirildi-denenecek
-	VirtGraph store = new VirtGraph("nytimes", "jdbc:virtuoso://localhost:1111", "dba", "dba");
+	VirtGraph store = new VirtGraph("nytimes", "jdbc:virtuoso://155.223.25.68:1111", "dba", "dba");
 
 	private Logger logger = LoggerFactory.getLogger(NyTimesUpdater.class);
 
