@@ -66,7 +66,7 @@ public class NyTimesUpdater extends Thread {
 				logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "nytimes")), "Dataset updated");
 
 				queryCounter++;
-				// TODO: Count sorgusu burada sisteme atılacak
+				// TODO: Count sorgusu burada sisteme atılacak-aşağıda atılmış?
 
 				
 				Node firstPredicate = Node.createURI("http://data.nytimes.com/elements/associated_article_count");
