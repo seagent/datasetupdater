@@ -24,18 +24,18 @@ import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 
 public class NyTimesUpdater extends Thread {
 
+	private static final String ARTICLE_COUNT_URI = "http://data.nytimes.com/elements/associated_article_count";
 	ArrayList<String> dbpediaCompanyList = new ArrayList<String>();
 	ArrayList<String> nytimesCompanyList = new ArrayList<String>();
 
 	// FIXME: nytimes URI doğrusuyla değiştirilecek
-	VirtGraph store = new VirtGraph("http://nytimes.com", "jdbc:virtuoso://localhost:1111", "dba", "dba");
+	VirtGraph store = new VirtGraph("http://nytimes.com", "jdbc:virtuoso://155.223.25.68:1111", "dba", "dba");
 
 	private Logger logger = LoggerFactory.getLogger(NyTimesUpdater.class);
 
 	private void init() throws IOException {
 
-		BufferedReader br = new BufferedReader(
-				new FileReader("src/main/resources/organisation_data.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("src/main/resources/organisation_data.txt"));
 
 		String line;
 		int blankPosition;
@@ -66,10 +66,8 @@ public class NyTimesUpdater extends Thread {
 				logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "nytimes")), "Dataset updated");
 
 				queryCounter++;
-				// TODO: Count sorgusu burada sisteme atılacak
 
-				// FIXME: article count URI ile değiştirilecek
-				Node firstPredicate = Node.createURI("http://articlecount.com/predicate");
+				Node firstPredicate = Node.createURI(ARTICLE_COUNT_URI);
 				int articleCount = 0;
 				for (int i = 0; i < this.nytimesCompanyList.size(); i++) {
 
@@ -77,7 +75,8 @@ public class NyTimesUpdater extends Thread {
 
 					String query = "SELECT ?sameCompany ?count WHERE {<"
 							+ dbpediaCompanyList.get(queryCounter).toString()
-							+ "> <http://www.w3.org/2002/07/owl#sameAs> ?sameCompany. ?sameCompany <http://data.nytimes.com/elements/associated_article_count> ?count.}";
+							+ "> <http://www.w3.org/2002/07/owl#sameAs> ?sameCompany. ?sameCompany <"
+							+ ARTICLE_COUNT_URI + "> ?count.}";
 
 					VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(query, store);
 					ResultSet results = vqe.execSelect();
