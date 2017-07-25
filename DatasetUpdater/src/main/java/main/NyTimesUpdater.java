@@ -22,13 +22,13 @@ import virtuoso.jena.driver.VirtGraph;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 
+
 public class NyTimesUpdater extends Thread {
 
 	private static final String ARTICLE_COUNT_URI = "http://data.nytimes.com/elements/associated_article_count";
 	ArrayList<String> dbpediaCompanyList = new ArrayList<String>();
 	ArrayList<String> nytimesCompanyList = new ArrayList<String>();
 
-	// FIXME: nytimes URI doğrusuyla değiştirilecek
 	VirtGraph store = new VirtGraph("http://nytimes.com", "jdbc:virtuoso://155.223.25.68:1111", "dba", "dba");
 
 	private Logger logger = LoggerFactory.getLogger(NyTimesUpdater.class);
