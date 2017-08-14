@@ -6,6 +6,16 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<dependencies>
 		<dependency>
+			<groupId>com.openlink.virtuoso</groupId>
+			<artifactId>virt_jena2</artifactId>
+			<version>7.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.openlink.virtuoso</groupId>
+			<artifactId>virtjdbc4</artifactId>
+			<version>7.1.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.elasticsearch.client</groupId>
 			<artifactId>transport</artifactId>
 			<version>5.4.0</version>
@@ -161,7 +171,7 @@
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<manifestEntries>
-										<Main-Class>observer.actor.QueryApplication</Main-Class>
+										<Main-Class>main.MainUpdater</Main-Class>
 									</manifestEntries>
 								</transformer>
 							</transformers>
@@ -171,4 +181,10 @@
 			</plugin>
 		</plugins>
 	</build>
+	<repositories>
+		<repository>
+			<id>maven.aksw.internal</id>
+			<url>http://maven.aksw.org/repository/internal</url>
+		</repository>
+	</repositories>
 </project>

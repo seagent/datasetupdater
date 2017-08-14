@@ -4,13 +4,12 @@ import static main.LogFieldFormatter.format;
 import static main.LogFieldFormatter.pair;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +32,6 @@ public class StockUpdater extends Thread {
 	ArrayList<Integer> articleCount = new ArrayList<Integer>();
 	ArrayList<VirtGraph> storeList = new ArrayList<VirtGraph>();
 
-	DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss.SSS");
 	private Logger logger = LoggerFactory.getLogger(StockUpdater.class);
 
 	private void init() throws IOException
@@ -42,8 +40,8 @@ public class StockUpdater extends Thread {
 
 		storeList.add(new VirtGraph("http://stockmarket.com", "jdbc:virtuoso://155.223.24.193:1111", "dba", "dba"));
 
-		@SuppressWarnings("resource")
-		BufferedReader br = new BufferedReader(new FileReader("src/main/resources/organisation_data.txt"));
+		InputStream is = getClass().getResourceAsStream("/organization_data.txt");
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
 		String line;
 		int blankPosition;
