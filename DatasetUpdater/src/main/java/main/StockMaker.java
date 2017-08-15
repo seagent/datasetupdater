@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.NodeFactory;
 
 import virtuoso.jena.driver.VirtGraph;
 import virtuoso.jena.driver.VirtuosoUpdateFactory;
@@ -74,12 +75,12 @@ public class StockMaker {
 		vur = VirtuosoUpdateFactory.create(str, storeList.get(0));
 		vur.exec();
 
-		Node firstPredicate = Node.createURI("http://stockmarket.com/elements/stockValue");
+		Node firstPredicate = NodeFactory.createURI("http://stockmarket.com/elements/stockValue");
 
 		for (int i = 0; i < this.nytimesCompanyList.size(); i++) {
 			// transactionHandler.begin();
 			String companyUri = this.nytimesCompanyList.get(i);
-			Node subject = Node.createURI(companyUri);
+			Node subject = NodeFactory.createURI(companyUri);
 
 			str = "INSERT INTO GRAPH <http://stockmarket.com> {<" + subject.getURI() + "> <" + firstPredicate.getURI()
 					+ "> \"" + 0 + "\"^^xsd:integer}";
@@ -97,7 +98,7 @@ public class StockMaker {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-			StockMaker maker = new StockMaker();
+			new StockMaker();
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

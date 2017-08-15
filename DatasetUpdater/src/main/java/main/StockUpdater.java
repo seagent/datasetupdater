@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.NodeFactory;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
@@ -83,10 +84,10 @@ public class StockUpdater extends Thread {
 						"Dataset update started");
 				queryCounter++;
 
-				Node firstPredicate = Node.createURI("http://stockmarket.com/elements/stockValue");
+				Node firstPredicate = NodeFactory.createURI("http://stockmarket.com/elements/stockValue");
 				for (int i = 0; i < this.nytimesCompanyList.size(); i++) {
 
-					Node subject = Node.createURI(this.nytimesCompanyList.get(i));
+					Node subject = NodeFactory.createURI(this.nytimesCompanyList.get(i));
 
 					Query sparql = QueryFactory.create("SELECT ?stock WHERE { <" + subject.getURI() + "> <"
 							+ firstPredicate.getURI() + "> ?stock }");
