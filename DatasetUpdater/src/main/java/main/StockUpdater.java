@@ -102,6 +102,7 @@ public class StockUpdater extends Thread {
 						storeList.get(0).delete(new Triple(subject, firstPredicate, NodeFactoryExtra.intToNode(stock)));
 
 					}
+					vqe.close();
 					stock++;
 					storeList.get(0).add(new Triple(subject, firstPredicate, NodeFactoryExtra.intToNode(stock)));
 					logger.debug(format(pair("time", LocalDateTime.now()), pair("company", subject.getURI()),

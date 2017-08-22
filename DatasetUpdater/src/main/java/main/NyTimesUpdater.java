@@ -89,6 +89,7 @@ public class NyTimesUpdater extends Thread {
 						store.delete(new Triple(subject, firstPredicate, NodeFactoryExtra.intToNode(articleCount)));
 
 					}
+					vqe.close();
 					articleCount++;
 					store.add(new Triple(subject, firstPredicate, NodeFactoryExtra.intToNode(articleCount)));
 					logger.debug(format(pair("time", LocalDateTime.now()), pair("company", subject.getURI()),
