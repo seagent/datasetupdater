@@ -6,9 +6,9 @@ import static main.LogFieldFormatter.pair;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +16,7 @@ import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.sparql.util.NodeFactoryExtra;
+import com.hp.hpl.jena.sparql.util.NodeFactory;
 
 import virtuoso.jena.driver.VirtGraph;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
@@ -29,7 +29,7 @@ public class NyTimesUpdater extends Thread {
 	ArrayList<String> dbpediaCompanyList = new ArrayList<String>();
 	ArrayList<String> nytimesCompanyList = new ArrayList<String>();
 
-	VirtGraph store = new VirtGraph("http://nytimes.com", "jdbc:virtuoso://155.223.25.68:1111", "dba", "dba");
+	VirtGraph store = new VirtGraph("http://nytimes.com", "jdbc:virtuoso://155.223.25.1:1111", "dba", "dba123");
 
 	private Logger logger = LoggerFactory.getLogger(NyTimesUpdater.class);
 
@@ -84,11 +84,11 @@ public class NyTimesUpdater extends Thread {
 						QuerySolution result = results.nextSolution();
 						articleCount = result.get("count").asLiteral().getInt();
 
-						store.delete(new Triple(subject, firstPredicate, NodeFactoryExtra.intToNode(articleCount)));
+						store.delete(new Triple(subject, firstPredicate, NodeFactory.intToNode(articleCount)));
 
 					}
 					articleCount++;
-					store.add(new Triple(subject, firstPredicate, NodeFactoryExtra.intToNode(articleCount)));
+					store.add(new Triple(subject, firstPredicate, NodeFactory.intToNode(articleCount)));
 					logger.debug(format(pair("time", LocalDateTime.now()), pair("company", subject.getURI()),
 							pair("dataset", "nytimes")), "Company data has been updated");
 				}

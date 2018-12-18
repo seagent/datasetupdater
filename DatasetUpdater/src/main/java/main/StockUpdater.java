@@ -6,11 +6,10 @@ import static main.LogFieldFormatter.pair;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +19,7 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.sparql.util.NodeFactoryExtra;
+import com.hp.hpl.jena.sparql.util.NodeFactory;
 
 import virtuoso.jena.driver.VirtGraph;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
@@ -33,14 +32,14 @@ public class StockUpdater extends Thread {
 	ArrayList<Integer> articleCount = new ArrayList<Integer>();
 	ArrayList<VirtGraph> storeList = new ArrayList<VirtGraph>();
 
-	DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss.SSS");
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss.SSS");
 	private Logger logger = LoggerFactory.getLogger(StockUpdater.class);
 
 	private void init() throws IOException
 
 	{
 
-		storeList.add(new VirtGraph("http://stockmarket.com", "jdbc:virtuoso://155.223.24.193:1111", "dba", "dba"));
+		storeList.add(new VirtGraph("http://stockmarket.com", "jdbc:virtuoso://155.223.25.2:1111", "dba", "dba123"));
 
 		@SuppressWarnings("resource")
 		BufferedReader br = new BufferedReader(new FileReader("src/main/resources/organisation_data.txt"));
@@ -100,11 +99,11 @@ public class StockUpdater extends Thread {
 						QuerySolution result = results.nextSolution();
 						stock = result.get("stock").asLiteral().getInt();
 
-						storeList.get(0).delete(new Triple(subject, firstPredicate, NodeFactoryExtra.intToNode(stock)));
+						storeList.get(0).delete(new Triple(subject, firstPredicate, NodeFactory.intToNode(stock)));
 
 					}
 					stock++;
-					storeList.get(0).add(new Triple(subject, firstPredicate, NodeFactoryExtra.intToNode(stock)));
+					storeList.get(0).add(new Triple(subject, firstPredicate, NodeFactory.intToNode(stock)));
 					logger.debug(format(pair("time", LocalDateTime.now()), pair("company", subject.getURI()),
 							pair("dataset", "stock")), "Company data has been updated");
 				}

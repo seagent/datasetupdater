@@ -1,15 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Environment</groupId>
 	<artifactId>DatasetUpdater</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<dependencies>
-		<dependency>
-			<groupId>org.elasticsearch.client</groupId>
-			<artifactId>transport</artifactId>
-			<version>5.4.0</version>
-		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.elasticsearch.client</groupId> -->
+		<!-- <artifactId>transport</artifactId> -->
+		<!-- <version>5.4.0</version> -->
+		<!-- </dependency> -->
 		<!-- https://mvnrepository.com/artifact/net.logstash.logback/logstash-logback-encoder -->
 		<dependency>
 			<groupId>net.logstash.logback</groupId>
@@ -62,16 +63,16 @@
 			<artifactId>logback-access</artifactId>
 			<version>1.2.1</version>
 		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>com.openlink.virtuoso</groupId> -->
-		<!-- <artifactId>virt_jena2</artifactId> -->
-		<!-- <version>7.1.0</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>com.openlink.virtuoso</groupId> -->
-		<!-- <artifactId>virtjdbc4</artifactId> -->
-		<!-- <version>7.1.0</version> -->
-		<!-- </dependency> -->
+		<dependency>
+			<groupId>com.openlink.virtuoso</groupId>
+			<artifactId>virt_jena2</artifactId>
+			<version>7.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.openlink.virtuoso</groupId>
+			<artifactId>virtjdbc4</artifactId>
+			<version>7.1.0</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -83,7 +84,7 @@
 		<dependency>
 			<groupId>Seagent</groupId>
 			<artifactId>wodqa</artifactId>
-			<version>0.0.3-20130902</version>
+			<version>0.0.4-2018.11.05</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>jena</artifactId>
@@ -109,6 +110,10 @@
 					<artifactId>slf4j-jdk14</artifactId>
 					<groupId>org.slf4j</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>jena-arq</artifactId>
+					<groupId>org.apache.jena</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 
@@ -129,6 +134,16 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
+	<repositories>
+		<repository>
+			<id>seagent.wodqa</id>
+			<url>https://raw.github.com/seagent/WoDQA/repository/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -138,7 +153,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.4.3</version>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -161,7 +176,9 @@
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<manifestEntries>
-										<Main-Class>observer.actor.QueryApplication</Main-Class>
+										<Main-Class>main.MainNytimesUpdater</Main-Class>
+										<Main-Class>main.MainStockUpdater</Main-Class>
+										<Main-Class>main.StockMaker</Main-Class>
 									</manifestEntries>
 								</transformer>
 							</transformers>

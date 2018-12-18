@@ -9,12 +9,10 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,14 +32,12 @@ public class StockMaker {
 	FileOutputStream out;
 	PrintStream pSOut;
 
-	DateTime jodaTime = new DateTime();
-
-	DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss.SSS");
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss.SSS");
 	private Logger logger = LoggerFactory.getLogger(StockMaker.class);
 
 	public StockMaker() throws NumberFormatException, IOException {
 		super();
-		storeList.add(new VirtGraph("http://stockmarket.com", "jdbc:virtuoso://localhost:1111", "dba", "dba"));
+		storeList.add(new VirtGraph("http://stockmarket.com", "jdbc:virtuoso://155.223.25.2:1111", "dba", "dba123"));
 		// storeList.add(new VirtGraph("dbpedia","jdbc:virtuoso://localhost:1111",
 		// "dba","dba"));
 
