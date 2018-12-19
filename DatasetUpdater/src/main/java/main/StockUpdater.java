@@ -6,6 +6,7 @@ import static main.LogFieldFormatter.pair;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -41,8 +42,9 @@ public class StockUpdater extends Thread {
 
 		storeList.add(new VirtGraph("http://stockmarket.com", "jdbc:virtuoso://155.223.25.2:1111", "dba", "dba123"));
 
-		@SuppressWarnings("resource")
-		BufferedReader br = new BufferedReader(new FileReader("src/main/resources/organisation_data.txt"));
+		StockUpdater.class.getClassLoader();
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader(ClassLoader.getSystemResourceAsStream("organization_data.txt")));
 
 		String line;
 		int blankPosition;

@@ -6,6 +6,7 @@ import static main.LogFieldFormatter.pair;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -22,7 +23,6 @@ import virtuoso.jena.driver.VirtGraph;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 
-
 public class NyTimesUpdater extends Thread {
 
 	private static final String ARTICLE_COUNT_URI = "http://data.nytimes.com/elements/associated_article_count";
@@ -35,7 +35,8 @@ public class NyTimesUpdater extends Thread {
 
 	private void init() throws IOException {
 
-		BufferedReader br = new BufferedReader(new FileReader("src/main/resources/organisation_data.txt"));
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader(ClassLoader.getSystemResourceAsStream("organization_data.txt")));
 
 		String line;
 		int blankPosition;

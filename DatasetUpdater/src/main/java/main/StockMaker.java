@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -43,7 +45,8 @@ public class StockMaker {
 
 		BufferedReader br;
 		try {
-			br = new BufferedReader(new FileReader("src/main/resources/organization_data.txt"));
+			br = new BufferedReader(
+					new InputStreamReader(getClass().getClassLoader().getResourceAsStream("organization_data.txt")));
 			String line;
 			int blankPosition;
 			while ((line = br.readLine()) != null) {
