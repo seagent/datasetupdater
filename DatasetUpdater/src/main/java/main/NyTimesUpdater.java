@@ -90,8 +90,10 @@ public class NyTimesUpdater extends Thread {
 					}
 					articleCount++;
 					store.add(new Triple(subject, firstPredicate, NodeFactory.intToNode(articleCount)));
-					logger.debug(format(pair("time", LocalDateTime.now()), pair("company", subject.getURI()),
-							pair("dataset", "nytimes")), "Company data has been updated");
+					logger.debug(
+							format(pair("time", LocalDateTime.now()), pair("company", subject.getURI()),
+									pair("dataset", "nytimes"), pair("article-count", articleCount)),
+							"Company data has been updated");
 				}
 
 				Thread.sleep(120000);

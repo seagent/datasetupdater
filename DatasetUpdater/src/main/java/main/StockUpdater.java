@@ -107,7 +107,7 @@ public class StockUpdater extends Thread {
 					stock++;
 					storeList.get(0).add(new Triple(subject, firstPredicate, NodeFactory.intToNode(stock)));
 					logger.debug(format(pair("time", LocalDateTime.now()), pair("company", subject.getURI()),
-							pair("dataset", "stock")), "Company data has been updated");
+							pair("dataset", "stock"), pair("stock-value", stock)), "Company data has been updated");
 				}
 
 				logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "stock")),
