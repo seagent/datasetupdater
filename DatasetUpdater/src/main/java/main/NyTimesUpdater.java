@@ -24,16 +24,21 @@ import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 
 public class NyTimesUpdater extends Thread {
 
-	private static final String ARTICLE_COUNT_URI = "http://data.nytimes.com/elements/associated_article_count";
 	ArrayList<String> dbpediaCompanyList = new ArrayList<String>();
 	ArrayList<String> nytimesCompanyList = new ArrayList<String>();
 
-	VirtGraph store = new VirtGraph("http://nytimes.com", "jdbc:virtuoso://155.223.25.1:1111", "dba", "dba123");
+	VirtGraph nytimesStore;
+	private static int COMPANY_SIZE = 10000;
 
 	private Logger logger = LoggerFactory.getLogger(NyTimesUpdater.class);
 
 	private void init() throws IOException {
+		nytimesStore = new VirtGraph("http://nytimes.com", "jdbc:virtuoso://155.223.25.1:1111", "dba", "dba123");
+		//readOrganizationData();
+		//COMPANY_SIZE = this.nytimesCompanyList.size();
+	}
 
+	private void readOrganizationData() throws IOException {
 		BufferedReader br = new BufferedReader(
 				new InputStreamReader(ClassLoader.getSystemResourceAsStream("organization_data.txt")));
 
@@ -48,7 +53,6 @@ public class NyTimesUpdater extends Thread {
 			line = line.substring(blankPosition + 1);
 
 		}
-
 	}
 
 	public void run() {
@@ -61,41 +65,32 @@ public class NyTimesUpdater extends Thread {
 			logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "nytimes")),
 					"All datasets are being updated");
 
-			while (queryCounter < 550)// this.nytimesCompanyList.size())
+			while (queryCounter < COMPANY_SIZE)// this.nytimesCompanyList.size())
 			{
 				logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "nytimes")), "Dataset updated");
 
 				queryCounter++;
 
-				Node firstPredicate = Node.createURI(ARTICLE_COUNT_URI);
 				int articleCount = 0;
-				for (int i = 0; i < this.nytimesCompanyList.size(); i++) {
+				for (int i = 0; i < COMPANY_SIZE; i++) {
 
-					Node subject = Node.createURI(this.nytimesCompanyList.get(i));
+					// String nytimesCompanyURI = nytimesCompanyList.get(i);
+					String nytimesCompanyURI = Constants.NYTIME_RSC_PREFIX + "company-" + (i + 1);
+					Node subject = Node.createURI(nytimesCompanyURI);
 
-					String query = "SELECT ?sameCompany ?count WHERE {<"
-							+ dbpediaCompanyList.get(queryCounter).toString()
-							+ "> <http://www.w3.org/2002/07/owl#sameAs> ?sameCompany. ?sameCompany <"
-							+ ARTICLE_COUNT_URI + "> ?count.}";
-
-					VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(query, store);
-					ResultSet results = vqe.execSelect();
-					while (results.hasNext()) {
-						QuerySolution result = results.nextSolution();
-						articleCount = result.get("count").asLiteral().getInt();
-
-						store.delete(new Triple(subject, firstPredicate, NodeFactory.intToNode(articleCount)));
-
-					}
+					articleCount = getArticleCount(nytimesCompanyURI);
+					nytimesStore.delete(
+							new Triple(subject, Constants.ARTICLE_COUNT_NODE, NodeFactory.intToNode(articleCount)));
 					articleCount++;
-					store.add(new Triple(subject, firstPredicate, NodeFactory.intToNode(articleCount)));
+					nytimesStore.add(
+							new Triple(subject, Constants.ARTICLE_COUNT_NODE, NodeFactory.intToNode(articleCount)));
 					logger.debug(
 							format(pair("time", LocalDateTime.now()), pair("company", subject.getURI()),
 									pair("dataset", "nytimes"), pair("article-count", articleCount)),
 							"Company data has been updated");
 				}
 
-				Thread.sleep(120000);
+				Thread.sleep(240000);
 
 				logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "nytimes")), "Dataset updated");
 			}
@@ -107,6 +102,22 @@ public class NyTimesUpdater extends Thread {
 			logger.error(ex.getMessage());
 		}
 
+	}
+
+	private int getArticleCount(String nytimesCompanyURI) {
+		String query = "SELECT ?count WHERE {<" + nytimesCompanyURI + "> <" + Constants.ARTICLE_COUNT_URI
+				+ "> ?count.}";
+
+		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(query, nytimesStore);
+		int articleCount = 0;
+		ResultSet results = vqe.execSelect();
+		if (results.hasNext()) {
+			QuerySolution result = results.nextSolution();
+			articleCount = result.get("count").asLiteral().getInt();
+
+		}
+		vqe.close();
+		return articleCount;
 	}
 
 }

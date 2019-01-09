@@ -30,17 +30,22 @@ public class StockUpdater extends Thread {
 	ArrayList<String> dbpediaCompanyList = new ArrayList<String>();
 	ArrayList<String> nytimesCompanyList = new ArrayList<String>();
 	ArrayList<Integer> articleCount = new ArrayList<Integer>();
-	ArrayList<VirtGraph> storeList = new ArrayList<VirtGraph>();
-
+	VirtGraph stockStore;
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss.SSS");
 	private Logger logger = LoggerFactory.getLogger(StockUpdater.class);
+
+	private static int COMPANY_SIZE = 10000;
 
 	private void init() throws IOException
 
 	{
 
-		storeList.add(new VirtGraph("http://stockmarket.com", "jdbc:virtuoso://155.223.25.2:1111", "dba", "dba123"));
+		stockStore = new VirtGraph("http://stockmarket.com", "jdbc:virtuoso://155.223.25.2:1111", "dba", "dba123");
+		//readCompanyData();
+		//COMPANY_SIZE = this.nytimesCompanyList.size();
+	}
 
+	private void readCompanyData() throws IOException {
 		StockUpdater.class.getClassLoader();
 		BufferedReader br = new BufferedReader(
 				new InputStreamReader(ClassLoader.getSystemResourceAsStream("organization_data.txt")));
@@ -70,48 +75,43 @@ public class StockUpdater extends Thread {
 			logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "stock")),
 					"All datasets are being updated");
 
-			while (queryCounter < this.nytimesCompanyList.size()) {
-
-				/*
-				 * try { out= new FileOutputStream("/home/oylum/Desktop/stock1/stock_output"+
-				 * queryCounter+".txt",true); pSOut=new PrintStream(out);
-				 * 
-				 * } catch (FileNotFoundException e) {
-				 * 
-				 * e.printStackTrace(); }
-				 */
+			while (queryCounter < COMPANY_SIZE) {
 
 				logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "stock")),
 						"Dataset update started");
 				queryCounter++;
 
-				Node firstPredicate = Node.createURI("http://stockmarket.com/elements/stockValue");
-				for (int i = 0; i < this.nytimesCompanyList.size(); i++) {
+				for (int i = 0; i < COMPANY_SIZE; i++) {
 
-					Node subject = Node.createURI(this.nytimesCompanyList.get(i));
+					// String nytimesCompanyUri = this.nytimesCompanyList.get(i);
+					String nytimesCompanyUri = Constants.NYTIME_RSC_PREFIX + "company-" + (i + 1);
+					Node subject = Node.createURI(nytimesCompanyUri);
 
 					Query sparql = QueryFactory.create("SELECT ?stock WHERE { <" + subject.getURI() + "> <"
-							+ firstPredicate.getURI() + "> ?stock }");
+							+ Constants.STOCK_VALUE_URI + "> ?stock }");
 
-					VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(sparql, storeList.get(0));
+					VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(sparql, stockStore);
 					int stock = 0;
 					ResultSet results = vqe.execSelect();
 					while (results.hasNext()) {
 						QuerySolution result = results.nextSolution();
 						stock = result.get("stock").asLiteral().getInt();
 
-						storeList.get(0).delete(new Triple(subject, firstPredicate, NodeFactory.intToNode(stock)));
+						stockStore
+								.delete(new Triple(subject, Constants.STOCK_COUNT_NODE, NodeFactory.intToNode(stock)));
 
 					}
 					stock++;
-					storeList.get(0).add(new Triple(subject, firstPredicate, NodeFactory.intToNode(stock)));
-					logger.debug(format(pair("time", LocalDateTime.now()), pair("company", subject.getURI()),
-							pair("dataset", "stock"), pair("stock-value", stock)), "Company data has been updated");
+					stockStore.add(new Triple(subject, Constants.STOCK_COUNT_NODE, NodeFactory.intToNode(stock)));
+					logger.debug(
+							format(pair("time", LocalDateTime.now()), pair("company", subject.getURI()),
+									pair("dataset", "stock"), pair("stock-value", stock)),
+							"Company data has been updated");
 				}
 
 				logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "stock")),
 						"Dataset update ended");
-				Thread.sleep(180000);
+				Thread.sleep(120000);
 
 			}
 

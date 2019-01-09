@@ -5,12 +5,9 @@ import static main.LogFieldFormatter.pair;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import org.slf4j.Logger;
@@ -27,20 +24,46 @@ public class StockMaker {
 	ArrayList<String> dbpediaCompanyList = new ArrayList<String>();
 	ArrayList<String> nytimesCompanyList = new ArrayList<String>();
 	ArrayList<Integer> articleCount = new ArrayList<Integer>();
-	ArrayList<VirtGraph> storeList = new ArrayList<VirtGraph>();
+	VirtGraph stockStore;
+	private static int COMPANY_SIZE = 10000;
 
-	FileOutputStream out;
-	PrintStream pSOut;
-
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss.SSS");
 	private Logger logger = LoggerFactory.getLogger(StockMaker.class);
 
 	public StockMaker() throws NumberFormatException, IOException {
 		super();
-		storeList.add(new VirtGraph("http://stockmarket.com", "jdbc:virtuoso://155.223.25.2:1111", "dba", "dba123"));
-		// storeList.add(new VirtGraph("dbpedia","jdbc:virtuoso://localhost:1111",
-		// "dba","dba"));
+		stockStore = new VirtGraph("http://stockmarket.com", "jdbc:virtuoso://155.223.25.2:1111", "dba", "dba123");
 
+		// readOrganizationData();
+		// COMPANY_SIZE=this.nytimesCompanyList.size();
+		VirtuosoUpdateRequest vur;
+		String str;
+		str = "CLEAR GRAPH <http://stockmarket.com> ";
+
+		// transactionHandler.commit();
+
+		vur = VirtuosoUpdateFactory.create(str, stockStore);
+		vur.exec();
+
+		for (int i = 0; i < COMPANY_SIZE; i++) {
+			// transactionHandler.begin();
+			// String companyUri = this.nytimesCompanyList.get(i);
+			String companyUri = Constants.NYTIME_RSC_PREFIX + "company-" + (i + 1);
+			Node subject = Node.createURI(companyUri);
+
+			str = "INSERT INTO GRAPH <http://stockmarket.com> {<" + subject.getURI() + "> <" + Constants.STOCK_VALUE_URI
+					+ "> \"" + 0 + "\"^^xsd:integer}";
+			logger.debug(
+					format(pair("time", LocalDateTime.now()), pair("company", companyUri), pair("dataset", "stock")),
+					"Company data has been inserted");
+			// transactionHandler.commit();
+
+			vur = VirtuosoUpdateFactory.create(str, stockStore);
+			vur.exec();
+		}
+
+	}
+
+	private void readOrganizationData() throws IOException {
 		BufferedReader br;
 		try {
 			br = new BufferedReader(
@@ -62,33 +85,6 @@ public class StockMaker {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		VirtuosoUpdateRequest vur;
-		String str;
-		str = "CLEAR GRAPH <http://stockmarket.com> ";
-
-		// transactionHandler.commit();
-
-		vur = VirtuosoUpdateFactory.create(str, storeList.get(0));
-		vur.exec();
-
-		Node firstPredicate = Node.createURI("http://stockmarket.com/elements/stockValue");
-
-		for (int i = 0; i < this.nytimesCompanyList.size(); i++) {
-			// transactionHandler.begin();
-			String companyUri = this.nytimesCompanyList.get(i);
-			Node subject = Node.createURI(companyUri);
-
-			str = "INSERT INTO GRAPH <http://stockmarket.com> {<" + subject.getURI() + "> <" + firstPredicate.getURI()
-					+ "> \"" + 0 + "\"^^xsd:integer}";
-			logger.debug(
-					format(pair("time", LocalDateTime.now()), pair("company", companyUri), pair("dataset", "stock")),
-					"Company data has been inserted");
-			// transactionHandler.commit();
-
-			vur = VirtuosoUpdateFactory.create(str, storeList.get(0));
-			vur.exec();
-		}
-
 	}
 
 	public static void main(String[] args) {
