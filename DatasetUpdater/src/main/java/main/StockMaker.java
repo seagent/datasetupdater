@@ -5,12 +5,9 @@ import static main.LogFieldFormatter.pair;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import org.slf4j.Logger;
@@ -29,10 +26,6 @@ public class StockMaker {
 	ArrayList<Integer> articleCount = new ArrayList<Integer>();
 	ArrayList<VirtGraph> storeList = new ArrayList<VirtGraph>();
 
-	FileOutputStream out;
-	PrintStream pSOut;
-
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss.SSS");
 	private Logger logger = LoggerFactory.getLogger(StockMaker.class);
 
 	public StockMaker() throws NumberFormatException, IOException {
