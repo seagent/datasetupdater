@@ -13,7 +13,7 @@ import virtuoso.jena.driver.VirtGraph;
 public class ArtificialDataGenerator {
 
 	private static final String COMPANY_PREFIX = "company-";
-	private static final int COMPANY_SIZE = 100000;
+	private static final int COMPANY_SIZE = 10000;
 	private static Logger logger = LoggerFactory.getLogger(ArtificialDataGenerator.class);
 	private static VirtGraph dbpediaGraph = new VirtGraph("http://dbpedia.org", "jdbc:virtuoso://155.223.25.1:1111",
 			"dba", "dba123");
@@ -27,12 +27,24 @@ public class ArtificialDataGenerator {
 		for (int i = 0; i < COMPANY_SIZE; i++) {
 			Node dbpediaCompanyNode = createCompanyNode(Constants.DBPEDIA_RSC_PREFIX, i);
 			Node nytimesCompanyNode = createCompanyNode(Constants.NYTIME_RSC_PREFIX, i);
-			dbpediaGraph.add(new Triple(dbpediaCompanyNode, RDF.type.asNode(), Constants.DBPEDIA_COMPANY_CLS_NODE));
-			dbpediaGraph.add(new Triple(dbpediaCompanyNode, OWL.sameAs.asNode(), nytimesCompanyNode));
-			nytimesGraph.add(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE, Constants.ZERO_COUNT_NODE));
-			stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_COUNT_NODE, Constants.ZERO_COUNT_NODE));
+			createData(dbpediaCompanyNode, nytimesCompanyNode);
+			//deleteData(dbpediaCompanyNode, nytimesCompanyNode);
 		}
 		logger.debug("Dataset creation has ended.");
+	}
+
+	private static void createData(Node dbpediaCompanyNode, Node nytimesCompanyNode) {
+		dbpediaGraph.add(new Triple(dbpediaCompanyNode, RDF.type.asNode(), Constants.DBPEDIA_COMPANY_CLS_NODE));
+		dbpediaGraph.add(new Triple(dbpediaCompanyNode, OWL.sameAs.asNode(), nytimesCompanyNode));
+		nytimesGraph.add(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE, Constants.ZERO_COUNT_NODE));
+		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_COUNT_NODE, Constants.ZERO_COUNT_NODE));
+	}
+	
+	private static void deleteData(Node dbpediaCompanyNode, Node nytimesCompanyNode) {
+		dbpediaGraph.delete(new Triple(dbpediaCompanyNode, RDF.type.asNode(), Constants.DBPEDIA_COMPANY_CLS_NODE));
+		dbpediaGraph.delete(new Triple(dbpediaCompanyNode, OWL.sameAs.asNode(), nytimesCompanyNode));
+		nytimesGraph.delete(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE, Constants.ZERO_COUNT_NODE));
+		stockGraph.delete(new Triple(nytimesCompanyNode, Constants.STOCK_COUNT_NODE, Constants.ZERO_COUNT_NODE));
 	}
 
 	private static Node createCompanyNode(String prefix, int i) {
