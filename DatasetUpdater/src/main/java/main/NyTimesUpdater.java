@@ -34,8 +34,8 @@ public class NyTimesUpdater extends Thread {
 
 	private void init() throws IOException {
 		nytimesStore = new VirtGraph("http://nytimes.com", "jdbc:virtuoso://155.223.25.1:1111", "dba", "dba123");
-		//readOrganizationData();
-		//COMPANY_SIZE = this.nytimesCompanyList.size();
+		readOrganizationData();
+		COMPANY_SIZE = this.nytimesCompanyList.size();
 	}
 
 	private void readOrganizationData() throws IOException {
@@ -74,8 +74,8 @@ public class NyTimesUpdater extends Thread {
 				int articleCount = 0;
 				for (int i = 0; i < COMPANY_SIZE; i++) {
 
-					// String nytimesCompanyURI = nytimesCompanyList.get(i);
-					String nytimesCompanyURI = Constants.NYTIME_RSC_PREFIX + "company-" + (i + 1);
+					String nytimesCompanyURI = nytimesCompanyList.get(i);
+					//String nytimesCompanyURI = Constants.NYTIME_RSC_PREFIX + "company-" + (i + 1);
 					Node subject = Node.createURI(nytimesCompanyURI);
 
 					articleCount = getArticleCount(nytimesCompanyURI);

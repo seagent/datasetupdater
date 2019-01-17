@@ -33,8 +33,8 @@ public class StockMaker {
 		super();
 		stockStore = new VirtGraph("http://stockmarket.com", "jdbc:virtuoso://155.223.25.2:1111", "dba", "dba123");
 
-		// readOrganizationData();
-		// COMPANY_SIZE=this.nytimesCompanyList.size();
+		readOrganizationData();
+		COMPANY_SIZE=this.nytimesCompanyList.size();
 		VirtuosoUpdateRequest vur;
 		String str;
 		str = "CLEAR GRAPH <http://stockmarket.com> ";
@@ -46,8 +46,8 @@ public class StockMaker {
 
 		for (int i = 0; i < COMPANY_SIZE; i++) {
 			// transactionHandler.begin();
-			// String companyUri = this.nytimesCompanyList.get(i);
-			String companyUri = Constants.NYTIME_RSC_PREFIX + "company-" + (i + 1);
+			 String companyUri = this.nytimesCompanyList.get(i);
+			//String companyUri = Constants.NYTIME_RSC_PREFIX + "company-" + (i + 1);
 			Node subject = Node.createURI(companyUri);
 
 			str = "INSERT INTO GRAPH <http://stockmarket.com> {<" + subject.getURI() + "> <" + Constants.STOCK_VALUE_URI

@@ -41,8 +41,8 @@ public class StockUpdater extends Thread {
 	{
 
 		stockStore = new VirtGraph("http://stockmarket.com", "jdbc:virtuoso://155.223.25.2:1111", "dba", "dba123");
-		//readCompanyData();
-		//COMPANY_SIZE = this.nytimesCompanyList.size();
+		readCompanyData();
+		COMPANY_SIZE = this.nytimesCompanyList.size();
 	}
 
 	private void readCompanyData() throws IOException {
@@ -83,8 +83,8 @@ public class StockUpdater extends Thread {
 
 				for (int i = 0; i < COMPANY_SIZE; i++) {
 
-					// String nytimesCompanyUri = this.nytimesCompanyList.get(i);
-					String nytimesCompanyUri = Constants.NYTIME_RSC_PREFIX + "company-" + (i + 1);
+					String nytimesCompanyUri = this.nytimesCompanyList.get(i);
+					//String nytimesCompanyUri = Constants.NYTIME_RSC_PREFIX + "company-" + (i + 1);
 					Node subject = Node.createURI(nytimesCompanyUri);
 
 					Query sparql = QueryFactory.create("SELECT ?stock WHERE { <" + subject.getURI() + "> <"
