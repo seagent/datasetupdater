@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.sparql.util.NodeFactory;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 
@@ -24,11 +26,11 @@ public class ArtificialDataGenerator {
 
 	public static void main(String[] args) {
 		logger.debug("Dataset creation has started.");
-		for (int i = 0; i < COMPANY_SIZE; i++) {
+		for (int i = 5000; i < COMPANY_SIZE; i++) {
 			Node dbpediaCompanyNode = createCompanyNode(Constants.DBPEDIA_RSC_PREFIX, i);
 			Node nytimesCompanyNode = createCompanyNode(Constants.NYTIME_RSC_PREFIX, i);
-			createData(dbpediaCompanyNode, nytimesCompanyNode);
-			//deleteData(dbpediaCompanyNode, nytimesCompanyNode);
+			// createData(dbpediaCompanyNode, nytimesCompanyNode);
+			deleteData(dbpediaCompanyNode, nytimesCompanyNode);
 		}
 		logger.debug("Dataset creation has ended.");
 	}
@@ -39,12 +41,12 @@ public class ArtificialDataGenerator {
 		nytimesGraph.add(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE, Constants.ZERO_COUNT_NODE));
 		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_COUNT_NODE, Constants.ZERO_COUNT_NODE));
 	}
-	
+
 	private static void deleteData(Node dbpediaCompanyNode, Node nytimesCompanyNode) {
 		dbpediaGraph.delete(new Triple(dbpediaCompanyNode, RDF.type.asNode(), Constants.DBPEDIA_COMPANY_CLS_NODE));
 		dbpediaGraph.delete(new Triple(dbpediaCompanyNode, OWL.sameAs.asNode(), nytimesCompanyNode));
-		nytimesGraph.delete(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE, Constants.ZERO_COUNT_NODE));
-		stockGraph.delete(new Triple(nytimesCompanyNode, Constants.STOCK_COUNT_NODE, Constants.ZERO_COUNT_NODE));
+		nytimesGraph.delete(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE, NodeFactory.intToNode(1)));
+		stockGraph.delete(new Triple(nytimesCompanyNode, Constants.STOCK_COUNT_NODE, NodeFactory.intToNode(1)));
 	}
 
 	private static Node createCompanyNode(String prefix, int i) {

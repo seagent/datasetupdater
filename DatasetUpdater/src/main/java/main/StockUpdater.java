@@ -34,15 +34,15 @@ public class StockUpdater extends Thread {
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss.SSS");
 	private Logger logger = LoggerFactory.getLogger(StockUpdater.class);
 
-	private static int COMPANY_SIZE = 10000;
+	private static int COMPANY_SIZE = 5000;
 
 	private void init() throws IOException
 
 	{
 
 		stockStore = new VirtGraph("http://stockmarket.com", "jdbc:virtuoso://155.223.25.2:1111", "dba", "dba123");
-		readCompanyData();
-		COMPANY_SIZE = this.nytimesCompanyList.size();
+		// readCompanyData();
+		// COMPANY_SIZE = this.nytimesCompanyList.size();
 	}
 
 	private void readCompanyData() throws IOException {
@@ -83,8 +83,8 @@ public class StockUpdater extends Thread {
 
 				for (int i = 0; i < COMPANY_SIZE; i++) {
 
-					String nytimesCompanyUri = this.nytimesCompanyList.get(i);
-					//String nytimesCompanyUri = Constants.NYTIME_RSC_PREFIX + "company-" + (i + 1);
+					// String nytimesCompanyUri = this.nytimesCompanyList.get(i);
+					String nytimesCompanyUri = Constants.NYTIME_RSC_PREFIX + "company-" + (i + 1);
 					Node subject = Node.createURI(nytimesCompanyUri);
 
 					Query sparql = QueryFactory.create("SELECT ?stock WHERE { <" + subject.getURI() + "> <"
@@ -111,7 +111,7 @@ public class StockUpdater extends Thread {
 
 				logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "stock")),
 						"Dataset update ended");
-				Thread.sleep(120000);
+				Thread.sleep(6000000);
 
 			}
 
