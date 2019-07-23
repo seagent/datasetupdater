@@ -28,7 +28,7 @@ public class NyTimesUpdater extends Thread {
 	ArrayList<String> nytimesCompanyList = new ArrayList<String>();
 
 	VirtGraph nytimesStore;
-	private static int COMPANY_SIZE = 5000;
+	private static int COMPANY_SIZE = 3000;
 
 	private Logger logger = LoggerFactory.getLogger(NyTimesUpdater.class);
 
@@ -90,7 +90,7 @@ public class NyTimesUpdater extends Thread {
 							"Company data has been updated");
 				}
 
-				Thread.sleep(12000000);
+				Thread.sleep(8600000);
 
 				logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "nytimes")), "Dataset updated");
 			}

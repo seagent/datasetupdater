@@ -34,7 +34,7 @@ public class StockUpdater extends Thread {
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss.SSS");
 	private Logger logger = LoggerFactory.getLogger(StockUpdater.class);
 
-	private static int COMPANY_SIZE = 5000;
+	private static int COMPANY_SIZE = 3000;
 
 	private void init() throws IOException
 
@@ -111,7 +111,7 @@ public class StockUpdater extends Thread {
 
 				logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "stock")),
 						"Dataset update ended");
-				Thread.sleep(6000000);
+				Thread.sleep(4200000);
 
 			}
 
