@@ -28,7 +28,6 @@ public class NyTimesUpdater extends Thread {
 	ArrayList<String> nytimesCompanyList = new ArrayList<String>();
 
 	VirtGraph nytimesStore;
-	private static int COMPANY_SIZE = 3000;
 
 	private Logger logger = LoggerFactory.getLogger(NyTimesUpdater.class);
 
@@ -65,14 +64,14 @@ public class NyTimesUpdater extends Thread {
 			logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "nytimes")),
 					"All datasets are being updated");
 
-			while (queryCounter < COMPANY_SIZE)// this.nytimesCompanyList.size())
+			while (queryCounter < Constants.COMPANY_SIZE)// this.nytimesCompanyList.size())
 			{
 				logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "nytimes")), "Dataset updated");
 
 				queryCounter++;
 
 				int articleCount = 0;
-				for (int i = 0; i < COMPANY_SIZE; i++) {
+				for (int i = 0; i < Constants.COMPANY_SIZE; i++) {
 
 					// String nytimesCompanyURI = nytimesCompanyList.get(i);
 					String nytimesCompanyURI = Constants.NYTIME_RSC_PREFIX + "company-" + (i + 1);
@@ -90,7 +89,7 @@ public class NyTimesUpdater extends Thread {
 							"Company data has been updated");
 				}
 
-				Thread.sleep(8600000);
+				Thread.sleep(Constants.NYTIMES_UPDATE_IN_MILLIS);
 
 				logger.debug(format(pair("time", LocalDateTime.now()), pair("dataset", "nytimes")), "Dataset updated");
 			}

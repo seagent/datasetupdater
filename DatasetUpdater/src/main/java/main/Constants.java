@@ -15,5 +15,8 @@ public class Constants {
 	static final Node ARTICLE_COUNT_NODE = Node.createURI(ARTICLE_COUNT_URI);
 	static final Node STOCK_COUNT_NODE = Node.createURI(STOCK_VALUE_URI);
 	static final Node ZERO_COUNT_NODE = NodeFactory.intToNode(0);
+	static final int NYTIMES_UPDATE_IN_MILLIS = 600000;
+	static final int STOCK_UPDATE_IN_MILLIS = 300000;
+	static int COMPANY_SIZE = 2500;
 
 }
