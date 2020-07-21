@@ -1,27 +1,28 @@
 package main;
 
-import javafx.util.Pair;
+import java.io.Serializable;
 
-@SuppressWarnings("restriction")
-public class TextPair extends Pair<String, String> {
+public class TextPair implements Serializable {
 
 	/**
-	 * serial ID
+	 * 
 	 */
-	private static final long serialVersionUID = 8006598578653141399L;
+	private static final long serialVersionUID = 2638971245424402178L;
+	
+	private String key;
+	private String value;
 
 	public TextPair(String key, String value) {
-		super(key, value);
+		this.key = key;
+		this.value = value;
 	}
 
-	@Override
 	public String getKey() {
-		return super.getKey();
+		return this.key;
 	}
 
-	@Override
 	public String getValue() {
-		return super.getValue();
+		return this.value;
 	}
 
 }

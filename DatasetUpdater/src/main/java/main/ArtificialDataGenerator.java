@@ -14,22 +14,22 @@ import virtuoso.jena.driver.VirtGraph;
 public class ArtificialDataGenerator {
 
 	private static final String COMPANY_PREFIX = "company-";
-	private static final int COMPANY_SIZE = 3000;
+	private static final int COMPANY_SIZE = 500;
 	private static Logger logger = LoggerFactory.getLogger(ArtificialDataGenerator.class);
-	private static VirtGraph dbpediaGraph = new VirtGraph("http://dbpedia.org", "jdbc:virtuoso://155.223.25.1:1111",
+	private static VirtGraph dbpediaGraph = new VirtGraph("http://dbpedia.org", "jdbc:virtuoso://155.223.25.4:1111",
 			"dba", "dba123");
-	private static VirtGraph nytimesGraph = new VirtGraph("http://nytimes.com", "jdbc:virtuoso://155.223.25.1:1111",
+	private static VirtGraph nytimesGraph = new VirtGraph("http://data.nytimes.com", "jdbc:virtuoso://155.223.25.1:1111",
 			"dba", "dba123");
 	private static VirtGraph stockGraph = new VirtGraph("http://stockmarket.com", "jdbc:virtuoso://155.223.25.2:1111",
 			"dba", "dba123");
 
 	public static void main(String[] args) {
 		logger.debug("Dataset creation has started.");
-		for (int i = 2500; i < COMPANY_SIZE; i++) {
+		for (int i = 0; i < COMPANY_SIZE; i++) {
 			Node dbpediaCompanyNode = createCompanyNode(Constants.DBPEDIA_RSC_PREFIX, i);
 			Node nytimesCompanyNode = createCompanyNode(Constants.NYTIME_RSC_PREFIX, i);
-			//createData(dbpediaCompanyNode, nytimesCompanyNode);
-			deleteData(dbpediaCompanyNode, nytimesCompanyNode);
+			createData(dbpediaCompanyNode, nytimesCompanyNode);
+			//deleteData(dbpediaCompanyNode, nytimesCompanyNode);
 		}
 		logger.debug("Dataset creation has ended.");
 	}

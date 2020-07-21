@@ -32,7 +32,7 @@ public class NyTimesUpdater extends Thread {
 	private Logger logger = LoggerFactory.getLogger(NyTimesUpdater.class);
 
 	private void init() throws IOException {
-		nytimesStore = new VirtGraph("http://nytimes.com", "jdbc:virtuoso://155.223.25.1:1111", "dba", "dba123");
+		nytimesStore = new VirtGraph("http://data.nytimes.com", "jdbc:virtuoso://155.223.25.1:1111", "dba", "dba123");
 		// readOrganizationData();
 		// COMPANY_SIZE = this.nytimesCompanyList.size();
 	}

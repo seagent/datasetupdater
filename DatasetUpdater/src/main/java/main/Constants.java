@@ -17,6 +17,6 @@ public class Constants {
 	static final Node ZERO_COUNT_NODE = NodeFactory.intToNode(0);
 	static final int NYTIMES_UPDATE_IN_MILLIS = 600000;
 	static final int STOCK_UPDATE_IN_MILLIS = 300000;
-	static int COMPANY_SIZE = 2500;
+	static int COMPANY_SIZE = 500;
 
 }
