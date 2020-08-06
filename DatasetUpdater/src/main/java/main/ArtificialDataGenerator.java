@@ -14,7 +14,6 @@ import virtuoso.jena.driver.VirtGraph;
 public class ArtificialDataGenerator {
 
 	private static final String COMPANY_PREFIX = "company-";
-	private static final int COMPANY_SIZE = 500;
 	private static Logger logger = LoggerFactory.getLogger(ArtificialDataGenerator.class);
 	private static VirtGraph dbpediaGraph = new VirtGraph("http://dbpedia.org", "jdbc:virtuoso://155.223.25.4:1111",
 			"dba", "dba123");
@@ -25,7 +24,7 @@ public class ArtificialDataGenerator {
 
 	public static void main(String[] args) {
 		logger.debug("Dataset creation has started.");
-		for (int i = 0; i < COMPANY_SIZE; i++) {
+		for (int i = 3000; i < Constants.COMPANY_SIZE; i++) {
 			Node dbpediaCompanyNode = createCompanyNode(Constants.DBPEDIA_RSC_PREFIX, i);
 			Node nytimesCompanyNode = createCompanyNode(Constants.NYTIME_RSC_PREFIX, i);
 			createData(dbpediaCompanyNode, nytimesCompanyNode);
@@ -44,8 +43,8 @@ public class ArtificialDataGenerator {
 	private static void deleteData(Node dbpediaCompanyNode, Node nytimesCompanyNode) {
 		dbpediaGraph.delete(new Triple(dbpediaCompanyNode, RDF.type.asNode(), Constants.DBPEDIA_COMPANY_CLS_NODE));
 		dbpediaGraph.delete(new Triple(dbpediaCompanyNode, OWL.sameAs.asNode(), nytimesCompanyNode));
-		nytimesGraph.delete(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE, NodeFactory.intToNode(77)));
-		stockGraph.delete(new Triple(nytimesCompanyNode, Constants.STOCK_COUNT_NODE, NodeFactory.intToNode(122)));
+		nytimesGraph.delete(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE, NodeFactory.intToNode(4)));
+		stockGraph.delete(new Triple(nytimesCompanyNode, Constants.STOCK_COUNT_NODE, NodeFactory.intToNode(6)));
 	}
 
 	private static Node createCompanyNode(String prefix, int i) {
