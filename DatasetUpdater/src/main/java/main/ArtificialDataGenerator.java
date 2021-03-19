@@ -24,9 +24,9 @@ public class ArtificialDataGenerator {
 
 	public static void main(String[] args) {
 		logger.debug("Dataset creation has started.");
-		for (int i = 3000; i < Constants.COMPANY_SIZE; i++) {
+		for (int i = 0; i < Constants.COMPANY_SIZE; i++) {
 			Node dbpediaCompanyNode = createCompanyNode(Constants.DBPEDIA_RSC_PREFIX, i);
-			Node nytimesCompanyNode = createCompanyNode(Constants.NYTIME_RSC_PREFIX, i);
+			Node nytimesCompanyNode = createCompanyNode(Constants.NYTIMES_RSC_PREFIX, i);
 			createData(dbpediaCompanyNode, nytimesCompanyNode);
 			//deleteData(dbpediaCompanyNode, nytimesCompanyNode);
 		}
@@ -34,10 +34,11 @@ public class ArtificialDataGenerator {
 	}
 
 	private static void createData(Node dbpediaCompanyNode, Node nytimesCompanyNode) {
-		dbpediaGraph.add(new Triple(dbpediaCompanyNode, RDF.type.asNode(), Constants.DBPEDIA_COMPANY_CLS_NODE));
-		dbpediaGraph.add(new Triple(dbpediaCompanyNode, OWL.sameAs.asNode(), nytimesCompanyNode));
-		nytimesGraph.add(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE, Constants.ZERO_COUNT_NODE));
-		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_COUNT_NODE, Constants.ZERO_COUNT_NODE));
+		//dbpediaGraph.add(new Triple(dbpediaCompanyNode, RDF.type.asNode(), Constants.DBPEDIA_COMPANY_CLS_NODE));
+		//dbpediaGraph.add(new Triple(dbpediaCompanyNode, OWL.sameAs.asNode(), nytimesCompanyNode));
+		//nytimesGraph.add(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE, Constants.ZERO_COUNT_NODE));
+		//nytimesGraph.add(new Triple(nytimesCompanyNode, RDF.type.asNode(), Constants.NYTIMES_COMPANY_NODE));
+		//stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_COUNT_NODE, Constants.ZERO_COUNT_NODE));
 	}
 	
 	private static void deleteData(Node dbpediaCompanyNode, Node nytimesCompanyNode) {

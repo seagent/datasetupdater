@@ -74,7 +74,7 @@ public class NyTimesUpdater extends Thread {
 				for (int i = 0; i < Constants.COMPANY_SIZE; i++) {
 
 					// String nytimesCompanyURI = nytimesCompanyList.get(i);
-					String nytimesCompanyURI = Constants.NYTIME_RSC_PREFIX + "company-" + (i + 1);
+					String nytimesCompanyURI = Constants.NYTIMES_RSC_PREFIX + "company-" + (i + 1);
 					Node subject = Node.createURI(nytimesCompanyURI);
 
 					articleCount = getArticleCount(nytimesCompanyURI);

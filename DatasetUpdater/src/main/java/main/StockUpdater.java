@@ -82,7 +82,7 @@ public class StockUpdater extends Thread {
 				for (int i = 0; i < Constants.COMPANY_SIZE; i++) {
 
 					// String nytimesCompanyUri = this.nytimesCompanyList.get(i);
-					String nytimesCompanyUri = Constants.NYTIME_RSC_PREFIX + "company-" + (i + 1);
+					String nytimesCompanyUri = Constants.NYTIMES_RSC_PREFIX + "company-" + (i + 1);
 					Node subject = Node.createURI(nytimesCompanyUri);
 
 					Query sparql = QueryFactory.create("SELECT ?stock WHERE { <" + subject.getURI() + "> <"
