@@ -3,6 +3,7 @@ package main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.datatypes.xsd.impl.XSDDateType;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
@@ -10,9 +11,11 @@ import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.util.NodeFactory;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
+import com.hp.hpl.jena.vocabulary.RDFS;
 import com.hp.hpl.jena.vocabulary.XSD;
 
 import virtuoso.jena.driver.VirtGraph;
@@ -57,8 +60,24 @@ public class ArtificialDataGenerator {
 //		createStockData(nytimesCompanyNode, count);
 	}
 
+	private static void createNytimesData(Node nytimesCompanyNode, int count) {
+		nytimesGraph.add(new Triple(nytimesCompanyNode, RDF.type.asNode(), Constants.NYTIMES_COMPANY_NODE));
+		nytimesGraph.add(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE, Constants.ZERO_COUNT_NODE));
+		nytimesGraph.add(new Triple(nytimesCompanyNode, Constants.NYTIMES_REPUTATION_NODE,
+				Node.createLiteral(Constants.VERY_HIGH, XSDDatatype.XSDstring)));
+	}
+
+	private static void createDbpediaData(Node dbpediaCompanyNode, Node nytimesCompanyNode, int count) {
+		dbpediaGraph.add(new Triple(dbpediaCompanyNode, RDF.type.asNode(), Constants.DBPEDIA_COMPANY_CLS_NODE));
+		dbpediaGraph.add(new Triple(dbpediaCompanyNode, RDFS.label.asNode(),
+				Node.createLiteral("Company-" + count, XSDDatatype.XSDstring)));
+		dbpediaGraph.add(new Triple(dbpediaCompanyNode, Constants.DBPEDIA_NUMBER_OF_STAFF, NodeFactory.intToNode(0)));
+		dbpediaGraph.add(new Triple(dbpediaCompanyNode, OWL.sameAs.asNode(), nytimesCompanyNode));
+	}
+
 	private static void createStockData(Node nytimesCompanyNode, int count) {
 		stockGraph.add(new Triple(nytimesCompanyNode, RDF.type.asNode(), Constants.STOCK_COMPANY_NODE));
+		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_COUNT_NODE, Constants.ZERO_COUNT_NODE));
 		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_COMPANYNAME_NODE,
 				Node.createLiteral("Company-" + count)));
 		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_MARKET_NODE,
@@ -71,22 +90,47 @@ public class ArtificialDataGenerator {
 	}
 
 	private static void deleteData(Node dbpediaCompanyNode, Node nytimesCompanyNode, int count) {
-		//deleteNytimesData();
-		
-		//dbpediaGraph.delete(new Triple(dbpediaCompanyNode, RDF.type.asNode(), Constants.DBPEDIA_COMPANY_CLS_NODE));
-		//dbpediaGraph.delete(new Triple(dbpediaCompanyNode, OWL.sameAs.asNode(), nytimesCompanyNode));
-		//nytimesGraph.delete(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE, NodeFactory.intToNode(4)));
-		//nytimesGraph.delete(new Triple(nytimesCompanyNode, RDF.type.asNode(), Constants.NYTIMES_COMPANY_NODE));
-		//stockGraph.delete(new Triple(nytimesCompanyNode, Constants.STOCK_COUNT_NODE, NodeFactory.intToNode(6)));
+		// deleteNytimesData();
+
+		// dbpediaGraph.delete(new Triple(dbpediaCompanyNode, RDF.type.asNode(),
+		// Constants.DBPEDIA_COMPANY_CLS_NODE));
+		// dbpediaGraph.delete(new Triple(dbpediaCompanyNode, OWL.sameAs.asNode(),
+		// nytimesCompanyNode));
+		// nytimesGraph.delete(new Triple(nytimesCompanyNode,
+		// Constants.ARTICLE_COUNT_NODE, NodeFactory.intToNode(4)));
+		// nytimesGraph.delete(new Triple(nytimesCompanyNode, RDF.type.asNode(),
+		// Constants.NYTIMES_COMPANY_NODE));
+		// stockGraph.delete(new Triple(nytimesCompanyNode, Constants.STOCK_COUNT_NODE,
+		// NodeFactory.intToNode(6)));
 	}
 
 	private static void deleteNytimesData() {
-		QueryExecution queryExecution = QueryExecutionFactory.sparqlService( "http://155.223.25.1:8890/sparql","select * where {?nytCompany <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://data.nytimes.com/elements/Company>. ?nytCompany <http://data.nytimes.com/elements/associated_article_count> ?articleCount.}");
+		QueryExecution queryExecution = QueryExecutionFactory.sparqlService("http://155.223.25.1:8890/sparql",
+				"select * where {?nytCompany <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://data.nytimes.com/elements/Company>. ?nytCompany <http://data.nytimes.com/elements/associated_article_count> ?articleCount.}");
 		ResultSet resNyTimes = queryExecution.execSelect();
 		while (resNyTimes.hasNext()) {
 			QuerySolution querySolution = (QuerySolution) resNyTimes.next();
-			nytimesGraph.delete(new Triple(querySolution.getResource("nytCompany").asNode(), RDF.type.asNode(), Node.createURI(Constants.NYTIMES_COMPANY_URI)));
-			nytimesGraph.delete(new Triple(querySolution.getResource("nytCompany").asNode(), Node.createURI(Constants.ARTICLE_COUNT_URI), querySolution.getLiteral("articleCount").asNode()));
+			Resource nytRsc = querySolution.getResource("nytCompany");
+			nytimesGraph.delete(
+					new Triple(nytRsc.asNode(), RDF.type.asNode(), Node.createURI(Constants.NYTIMES_COMPANY_URI)));
+			nytimesGraph.delete(new Triple(nytRsc.asNode(), Node.createURI(Constants.ARTICLE_COUNT_URI),
+					querySolution.getLiteral("articleCount").asNode()));
+		}
+	}
+
+	private static void deleteDbpediaData() {
+		QueryExecution queryExecution = QueryExecutionFactory.sparqlService("http://155.223.25.4:8890/sparql",
+				"select * where {"
+						+ "?dbpediaCompany <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Company>."
+						+ "  FILTER (strstarts(str(?s), 'http://dbpedia.org/resource/company-'))" + "}");
+		ResultSet resNyTimes = queryExecution.execSelect();
+		while (resNyTimes.hasNext()) {
+			QuerySolution querySolution = (QuerySolution) resNyTimes.next();
+			Resource nytRsc = querySolution.getResource("dbpediaCompany");
+			nytimesGraph.delete(
+					new Triple(nytRsc.asNode(), RDF.type.asNode(), Node.createURI(Constants.NYTIMES_COMPANY_URI)));
+			nytimesGraph.delete(new Triple(nytRsc.asNode(), Node.createURI(Constants.ARTICLE_COUNT_URI),
+					querySolution.getLiteral("articleCount").asNode()));
 		}
 	}
 

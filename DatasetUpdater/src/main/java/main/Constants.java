@@ -9,6 +9,7 @@ public class Constants {
 	public static final String DBPEDIA_RSC_PREFIX = "http://dbpedia.org/resource/";
 	public static final String NYTIMES_RSC_PREFIX = "http://data.nytimes.com/";
 	public static final String ARTICLE_COUNT_URI = NYTIMES_RSC_PREFIX + "elements/associated_article_count";
+	public static final String NYTIMES_REPUTATION_URI = NYTIMES_RSC_PREFIX + "elements/reputation";
 	public static final String NYTIMES_COMPANY_URI = NYTIMES_RSC_PREFIX + "elements/Company";
 	public static final String STOCK_VALUE_URI = STOCKMARKET_PREFIX + "stockValue";
 	public static final String STOCK_COMPANY_URI = STOCKMARKET_PREFIX + "Company";
@@ -22,7 +23,9 @@ public class Constants {
 	public static final String DBPEDIA_ONTOLOGY_URI = "http://dbpedia.org/ontology/";
 	public static final String DBPEDIA_COMPANY_CLS_URI = DBPEDIA_ONTOLOGY_URI + "Company";
 	static final Node DBPEDIA_COMPANY_CLS_NODE = Node.createURI(DBPEDIA_COMPANY_CLS_URI);
+	public static final Node DBPEDIA_NUMBER_OF_STAFF = Node.createURI("http://dbpedia.org/ontology/numberOfStaff");
 	static final Node ARTICLE_COUNT_NODE = Node.createURI(ARTICLE_COUNT_URI);
+	static final Node NYTIMES_REPUTATION_NODE = Node.createURI(NYTIMES_REPUTATION_URI);
 	static final Node NYTIMES_COMPANY_NODE = Node.createURI(NYTIMES_COMPANY_URI);
 	static final Node STOCK_COUNT_NODE = Node.createURI(STOCK_VALUE_URI);
 	static final Node ZERO_COUNT_NODE = NodeFactory.intToNode(0);
@@ -36,6 +39,11 @@ public class Constants {
 	public static final Node STOCK_CURRENCY_NODE = Node.createURI(STOCK_CURRENCY_URI);
 	public static final Node STOCK_VALUECHANGE_NODE = Node.createURI(STOCK_VALUECHANGE_URI);
 	public static final Node STOCK_CHANGEPERCENT_NODE = Node.createURI(STOCK_CHANGEPERCENT_URI);
+	public static final String VERY_HIGH = "Very High";
+	public static final String HIGH = "High";
+	public static final String MEDIUM = "Medium";
+	public static final String LOW = "Low";
+	public static final String VERY_LOW = "Very Low";
 	static int COMPANY_SIZE = 3500;
 
 }
