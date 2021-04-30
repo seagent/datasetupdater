@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
-import com.hp.hpl.jena.datatypes.xsd.impl.XSDDateType;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -16,7 +15,6 @@ import com.hp.hpl.jena.sparql.util.NodeFactory;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
-import com.hp.hpl.jena.vocabulary.XSD;
 
 import virtuoso.jena.driver.VirtGraph;
 
@@ -43,50 +41,125 @@ public class ArtificialDataGenerator {
 	}
 
 	private static void createData(Node dbpediaCompanyNode, Node nytimesCompanyNode, int count) {
-		// dbpediaGraph.add(new Triple(dbpediaCompanyNode, RDF.type.asNode(),
-		// Constants.DBPEDIA_COMPANY_CLS_NODE));
-		// dbpediaGraph.add(new Triple(dbpediaCompanyNode, OWL.sameAs.asNode(),
-		// nytimesCompanyNode));
-		// nytimesGraph.add(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE,
-		// Constants.ZERO_COUNT_NODE));
-		// nytimesGraph.add(new Triple(nytimesCompanyNode, RDF.type.asNode(),
-		// Constants.NYTIMES_COMPANY_NODE));
-		// stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_COUNT_NODE,
-		// Constants.ZERO_COUNT_NODE));
-
-//		nytimesGraph.add(new Triple(nytimesCompanyNode, Node.createURI("http://www.w3.org/2004/02/skos/core#prefLabel"),
-//				Node.createLiteral("Company-" + count, "en", null)));
-
-//		createStockData(nytimesCompanyNode, count);
+		createNytimesData(nytimesCompanyNode, count);
+		createDbpediaData(dbpediaCompanyNode, nytimesCompanyNode, count);
+		createStockData(nytimesCompanyNode, count);
 	}
 
 	private static void createNytimesData(Node nytimesCompanyNode, int count) {
 		nytimesGraph.add(new Triple(nytimesCompanyNode, RDF.type.asNode(), Constants.NYTIMES_COMPANY_NODE));
 		nytimesGraph.add(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE, Constants.ZERO_COUNT_NODE));
 		nytimesGraph.add(new Triple(nytimesCompanyNode, Constants.NYTIMES_REPUTATION_NODE,
-				Node.createLiteral(Constants.VERY_HIGH, XSDDatatype.XSDstring)));
+				Node.createLiteral(getReputation(count), XSDDatatype.XSDstring)));
+	}
+
+	private static String getReputation(int count) {
+		String reputation = "";
+		if (count <= 1000) {
+			reputation = Constants.VERY_HIGH;
+		} else if (count > 1000 && count <= 2000) {
+			reputation = Constants.HIGH;
+		} else if (count > 2000 && count <= 3000) {
+			reputation = Constants.MEDIUM;
+		} else if (count > 3000 && count <= 4000) {
+			reputation = Constants.LOW;
+		} else if (count > 4000 && count <= 5000) {
+			reputation = Constants.VERY_LOW;
+		} else {
+			reputation = Constants.VERY_HIGH;
+		}
+		return reputation;
 	}
 
 	private static void createDbpediaData(Node dbpediaCompanyNode, Node nytimesCompanyNode, int count) {
 		dbpediaGraph.add(new Triple(dbpediaCompanyNode, RDF.type.asNode(), Constants.DBPEDIA_COMPANY_CLS_NODE));
 		dbpediaGraph.add(new Triple(dbpediaCompanyNode, RDFS.label.asNode(),
 				Node.createLiteral("Company-" + count, XSDDatatype.XSDstring)));
-		dbpediaGraph.add(new Triple(dbpediaCompanyNode, Constants.DBPEDIA_NUMBER_OF_STAFF, NodeFactory.intToNode(0)));
+
+		dbpediaGraph.add(new Triple(dbpediaCompanyNode, Constants.DBPEDIA_NUMBER_OF_STAFF,
+				NodeFactory.intToNode(getStaffCount(count))));
 		dbpediaGraph.add(new Triple(dbpediaCompanyNode, OWL.sameAs.asNode(), nytimesCompanyNode));
+	}
+
+	private static int getStaffCount(int count) {
+		int staffCount = 0;
+		if (count <= 500) {
+			staffCount = 100 * getRandomNumber(901, 1000);
+		} else if (count > 500 && count <= 1000) {
+			staffCount = 100 * getRandomNumber(801, 900);
+		} else if (count > 1000 && count <= 1500) {
+			staffCount = 100 * getRandomNumber(701, 800);
+		} else if (count > 1500 && count <= 2000) {
+			staffCount = 100 * getRandomNumber(601, 700);
+		} else if (count > 2000 && count <= 2500) {
+			staffCount = 100 * getRandomNumber(501, 600);
+		} else if (count > 2500 && count <= 3000) {
+			staffCount = 100 * getRandomNumber(401, 500);
+		} else if (count > 3000 && count <= 3500) {
+			staffCount = 100 * getRandomNumber(301, 400);
+		} else if (count > 3500 && count <= 4000) {
+			staffCount = 100 * getRandomNumber(201, 300);
+		} else if (count > 4000 && count <= 4500) {
+			staffCount = 100 * getRandomNumber(101, 200);
+		} else if (count > 4500 && count <= 5000) {
+			staffCount = 100 * getRandomNumber(11, 100);
+		} else {
+			staffCount = 100 * getRandomNumber(1, 10);
+		}
+		return staffCount;
 	}
 
 	private static void createStockData(Node nytimesCompanyNode, int count) {
 		stockGraph.add(new Triple(nytimesCompanyNode, RDF.type.asNode(), Constants.STOCK_COMPANY_NODE));
-		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_COUNT_NODE, Constants.ZERO_COUNT_NODE));
+		addStockMarketAndCurrency(nytimesCompanyNode, count);
+		int stockPrice = getRandomNumber(1, 500);
+		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_PRICE_NODE, NodeFactory.floatToNode(stockPrice)));
 		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_COMPANYNAME_NODE,
-				Node.createLiteral("Company-" + count)));
-		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_MARKET_NODE,
-				Node.createLiteral("New Yowk Stock Exchange")));
-		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_TRADES_NODE, Constants.ZERO_COUNT_NODE));
-		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_SHARES_NODE, Constants.ZERO_COUNT_NODE));
-		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_CURRENCY_NODE, Node.createLiteral("USD")));
+				Node.createLiteral("Company-" + count, XSDDatatype.XSDstring)));
+		int trades = getRandomNumber(10, 250) * Math.round(stockPrice);
+		int shares = getRandomNumber(10, 200) * trades;
+		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_TRADES_NODE, NodeFactory.intToNode(trades)));
+		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_SHARES_NODE, NodeFactory.intToNode(shares)));
 		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_VALUECHANGE_NODE, NodeFactory.floatToNode(0)));
 		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_CHANGEPERCENT_NODE, NodeFactory.floatToNode(0)));
+	}
+
+	private static void addStockMarketAndCurrency(Node nytimesCompanyNode, int count) {
+		String stockMarket = "";
+		String currency = "";
+		if (count <= 1000) {
+			//New York Stock Exchange
+			stockMarket = "NYSE";
+			currency = "USD";
+		} else if (count > 1000 && count <= 2000) {
+			//Tokyo Stock Exchange
+			stockMarket = "TSE";
+			currency = "JPY";
+		} else if (count > 2000 && count <= 3000) {
+			//Frankfurter Wertpapierbörse
+			stockMarket = "FWB";
+			currency = "EUR";
+		} else if (count > 3000 && count <= 4000) {
+			//London Stock Exchange
+			stockMarket = "LSE";
+			currency = "GBP";
+		} else if (count > 4000 && count <= 5000) {
+			//Borsa İstanbul
+			stockMarket = "BİST";
+			currency = "TRY";
+		} else {
+			//Borsa İstanbul
+			stockMarket = "BİST";
+			currency = "TRY";
+		}
+		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_MARKET_NODE,
+				Node.createLiteral(stockMarket, XSDDatatype.XSDstring)));
+		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_CURRENCY_NODE,
+				Node.createLiteral(currency, XSDDatatype.XSDstring)));
+	}
+
+	private static int getRandomNumber(int min, int max) {
+		return (int) ((Math.random() * (max - min)) + min);
 	}
 
 	private static void deleteData(Node dbpediaCompanyNode, Node nytimesCompanyNode, int count) {

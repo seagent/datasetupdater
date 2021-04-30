@@ -50,7 +50,7 @@ public class StockMaker {
 			//String companyUri = Constants.NYTIME_RSC_PREFIX + "company-" + (i + 1);
 			Node subject = Node.createURI(companyUri);
 
-			str = "INSERT INTO GRAPH <http://stockmarket.com> {<" + subject.getURI() + "> <" + Constants.STOCK_VALUE_URI
+			str = "INSERT INTO GRAPH <http://stockmarket.com> {<" + subject.getURI() + "> <" + Constants.STOCK_PRICE_URI
 					+ "> \"" + 0 + "\"^^xsd:integer}";
 			logger.debug(
 					format(pair("time", LocalDateTime.now()), pair("company", companyUri), pair("dataset", "stock")),

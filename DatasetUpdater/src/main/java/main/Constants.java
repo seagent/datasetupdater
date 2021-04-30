@@ -11,7 +11,7 @@ public class Constants {
 	public static final String ARTICLE_COUNT_URI = NYTIMES_RSC_PREFIX + "elements/associated_article_count";
 	public static final String NYTIMES_REPUTATION_URI = NYTIMES_RSC_PREFIX + "elements/reputation";
 	public static final String NYTIMES_COMPANY_URI = NYTIMES_RSC_PREFIX + "elements/Company";
-	public static final String STOCK_VALUE_URI = STOCKMARKET_PREFIX + "stockValue";
+	public static final String STOCK_PRICE_URI = STOCKMARKET_PREFIX + "stockPrice";
 	public static final String STOCK_COMPANY_URI = STOCKMARKET_PREFIX + "Company";
 	public static final String STOCK_COMPANYNAME_URI = STOCKMARKET_PREFIX + "companyName";
 	public static final String STOCK_MARKET_URI = STOCKMARKET_PREFIX + "market";
@@ -27,7 +27,7 @@ public class Constants {
 	static final Node ARTICLE_COUNT_NODE = Node.createURI(ARTICLE_COUNT_URI);
 	static final Node NYTIMES_REPUTATION_NODE = Node.createURI(NYTIMES_REPUTATION_URI);
 	static final Node NYTIMES_COMPANY_NODE = Node.createURI(NYTIMES_COMPANY_URI);
-	static final Node STOCK_COUNT_NODE = Node.createURI(STOCK_VALUE_URI);
+	static final Node STOCK_PRICE_NODE = Node.createURI(STOCK_PRICE_URI);
 	static final Node ZERO_COUNT_NODE = NodeFactory.intToNode(0);
 	static final Node STOCK_COMPANY_NODE = Node.createURI(STOCK_COMPANY_URI);
 	static final int NYTIMES_UPDATE_IN_MILLIS = 1200000;
@@ -44,6 +44,6 @@ public class Constants {
 	public static final String MEDIUM = "Medium";
 	public static final String LOW = "Low";
 	public static final String VERY_LOW = "Very Low";
-	static int COMPANY_SIZE = 3500;
+	static int COMPANY_SIZE = 500;
 
 }

@@ -86,21 +86,21 @@ public class StockUpdater extends Thread {
 					Node subject = Node.createURI(nytimesCompanyUri);
 
 					Query sparql = QueryFactory.create("SELECT ?stock WHERE { <" + subject.getURI() + "> <"
-							+ Constants.STOCK_VALUE_URI + "> ?stock }");
+							+ Constants.STOCK_PRICE_URI + "> ?stock }");
 
 					VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(sparql, stockStore);
-					int stock = 0;
+					float stock = 0;
 					ResultSet results = vqe.execSelect();
 					while (results.hasNext()) {
 						QuerySolution result = results.nextSolution();
-						stock = result.get("stock").asLiteral().getInt();
+						stock = result.get("stock").asLiteral().getFloat();
 
 						stockStore
-								.delete(new Triple(subject, Constants.STOCK_COUNT_NODE, NodeFactory.intToNode(stock)));
+								.delete(new Triple(subject, Constants.STOCK_PRICE_NODE, NodeFactory.floatToNode(stock)));
 
 					}
 					stock++;
-					stockStore.add(new Triple(subject, Constants.STOCK_COUNT_NODE, NodeFactory.intToNode(stock)));
+					stockStore.add(new Triple(subject, Constants.STOCK_PRICE_NODE, NodeFactory.floatToNode(stock)));
 					logger.debug(
 							format(pair("time", LocalDateTime.now()), pair("company", subject.getURI()),
 									pair("dataset", "stock"), pair("stock-value", stock)),
