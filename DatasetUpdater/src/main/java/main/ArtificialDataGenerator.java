@@ -196,9 +196,9 @@ public class ArtificialDataGenerator {
 				"select * where {"
 						+ "?dbpediaCompany <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Company>."
 						+ "  FILTER (strstarts(str(?s), 'http://dbpedia.org/resource/company-'))" + "}");
-		ResultSet resNyTimes = queryExecution.execSelect();
-		while (resNyTimes.hasNext()) {
-			QuerySolution querySolution = (QuerySolution) resNyTimes.next();
+		ResultSet resDbpedia = queryExecution.execSelect();
+		while (resDbpedia.hasNext()) {
+			QuerySolution querySolution = (QuerySolution) resDbpedia.next();
 			Resource nytRsc = querySolution.getResource("dbpediaCompany");
 			nytimesGraph.delete(
 					new Triple(nytRsc.asNode(), RDF.type.asNode(), Node.createURI(Constants.NYTIMES_COMPANY_URI)));

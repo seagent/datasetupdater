@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: Seagent:GraphCache:0.0.1-2018.11.05">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/Seagent/GraphCache/0.0.1-2018.11.05/GraphCache-0.0.1-2018.11.05.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/Seagent/GraphCache/0.0.1-2018.11.05/GraphCache-0.0.1-2018.11.05-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/Seagent/GraphCache/0.0.1-2018.11.05/GraphCache-0.0.1-2018.11.05-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: Seagent:wodqa:0.0.4-2018.11.05">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/Seagent/wodqa/0.0.4-2018.11.05/wodqa-0.0.4-2018.11.05.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/Seagent/wodqa/0.0.4-2018.11.05/wodqa-0.0.4-2018.11.05-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/Seagent/wodqa/0.0.4-2018.11.05/wodqa-0.0.4-2018.11.05-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
