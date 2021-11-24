@@ -48,6 +48,8 @@ public class ArtificialDataGenerator {
 
 	private static void createNytimesData(Node nytimesCompanyNode, int count) {
 		nytimesGraph.add(new Triple(nytimesCompanyNode, RDF.type.asNode(), Constants.NYTIMES_COMPANY_NODE));
+		nytimesGraph.add(new Triple(nytimesCompanyNode, RDFS.label.asNode(),
+				Node.createLiteral("Company-" + count, XSDDatatype.XSDstring)));
 		nytimesGraph.add(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE, Constants.ZERO_COUNT_NODE));
 		nytimesGraph.add(new Triple(nytimesCompanyNode, Constants.NYTIMES_REPUTATION_NODE,
 				Node.createLiteral(getReputation(count), XSDDatatype.XSDstring)));
@@ -195,7 +197,7 @@ public class ArtificialDataGenerator {
 		QueryExecution queryExecution = QueryExecutionFactory.sparqlService("http://155.223.25.4:8890/sparql",
 				"select * where {"
 						+ "?dbpediaCompany <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Company>."
-						+ "  FILTER (strstarts(str(?s), 'http://dbpedia.org/resource/company-'))" + "}");
+						+ "  FILTER (strstarts(str(?dbpediaCompany), 'http://dbpedia.org/resource/company-'))" + "}");
 		ResultSet resDbpedia = queryExecution.execSelect();
 		while (resDbpedia.hasNext()) {
 			QuerySolution querySolution = (QuerySolution) resDbpedia.next();

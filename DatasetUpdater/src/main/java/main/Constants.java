@@ -44,6 +44,6 @@ public class Constants {
 	public static final String MEDIUM = "Medium";
 	public static final String LOW = "Low";
 	public static final String VERY_LOW = "Very Low";
-	static int COMPANY_SIZE = 500;
+	static int COMPANY_SIZE = 5000;
 
 }
