@@ -8,6 +8,7 @@ public class Constants {
 	private static final String STOCKMARKET_PREFIX = "http://stockmarket.com/elements/";
 	public static final String DBPEDIA_RSC_PREFIX = "http://dbpedia.org/resource/";
 	public static final String NYTIMES_RSC_PREFIX = "http://data.nytimes.com/";
+	public static final String WALL_STREET_JOURNAL_RSC_PREFIX = "https://www.wsj.com/market-data/quotes/";
 	public static final String ARTICLE_COUNT_URI = NYTIMES_RSC_PREFIX + "elements/associated_article_count";
 	public static final String NYTIMES_REPUTATION_URI = NYTIMES_RSC_PREFIX + "elements/reputation";
 	public static final String NYTIMES_COMPANY_URI = NYTIMES_RSC_PREFIX + "elements/Company";

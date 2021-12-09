@@ -32,8 +32,8 @@ public class ArtificialDataGenerator {
 	public static void main(String[] args) {
 		logger.debug("Dataset creation has started.");
 		for (int i = 0; i < Constants.COMPANY_SIZE; i++) {
-			Node dbpediaCompanyNode = createCompanyNode(Constants.DBPEDIA_RSC_PREFIX, i);
-			Node nytimesCompanyNode = createCompanyNode(Constants.NYTIMES_RSC_PREFIX, i);
+			Node dbpediaCompanyNode = createCompanyNode(Constants.DBPEDIA_RSC_PREFIX, i+1);
+			Node nytimesCompanyNode = createCompanyNode(Constants.NYTIMES_RSC_PREFIX, i+1);
 			createData(dbpediaCompanyNode, nytimesCompanyNode, i + 1);
 			// deleteData(dbpediaCompanyNode, nytimesCompanyNode,i+1);
 		}
@@ -53,6 +53,8 @@ public class ArtificialDataGenerator {
 		nytimesGraph.add(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE, Constants.ZERO_COUNT_NODE));
 		nytimesGraph.add(new Triple(nytimesCompanyNode, Constants.NYTIMES_REPUTATION_NODE,
 				Node.createLiteral(getReputation(count), XSDDatatype.XSDstring)));
+		Node wallStreetJournalNode = createCompanyNode(Constants.WALL_STREET_JOURNAL_RSC_PREFIX, count);
+		nytimesGraph.add(new Triple(nytimesCompanyNode,OWL.sameAs.asNode(),wallStreetJournalNode));
 	}
 
 	private static String getReputation(int count) {
@@ -210,7 +212,7 @@ public class ArtificialDataGenerator {
 	}
 
 	private static Node createCompanyNode(String prefix, int i) {
-		return Node.createURI(prefix + COMPANY_PREFIX + (i + 1));
+		return Node.createURI(prefix + COMPANY_PREFIX + (i));
 	}
 
 }
