@@ -40,11 +40,12 @@ public class Constants {
 	public static final Node STOCK_CURRENCY_NODE = Node.createURI(STOCK_CURRENCY_URI);
 	public static final Node STOCK_VALUECHANGE_NODE = Node.createURI(STOCK_VALUECHANGE_URI);
 	public static final Node STOCK_CHANGEPERCENT_NODE = Node.createURI(STOCK_CHANGEPERCENT_URI);
+	public static final String ELITE = "Elite";
 	public static final String VERY_HIGH = "Very High";
 	public static final String HIGH = "High";
 	public static final String MEDIUM = "Medium";
 	public static final String LOW = "Low";
 	public static final String VERY_LOW = "Very Low";
-	static int COMPANY_SIZE = 5000;
+	static int COMPANY_SIZE = 5050;
 
 }

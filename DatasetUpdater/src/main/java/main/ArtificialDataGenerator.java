@@ -31,7 +31,7 @@ public class ArtificialDataGenerator {
 
 	public static void main(String[] args) {
 		logger.debug("Dataset creation has started.");
-		for (int i = 0; i < Constants.COMPANY_SIZE; i++) {
+		for (int i = 5000; i < 5050; i++) {
 			Node dbpediaCompanyNode = createCompanyNode(Constants.DBPEDIA_RSC_PREFIX, i+1);
 			Node nytimesCompanyNode = createCompanyNode(Constants.NYTIMES_RSC_PREFIX, i+1);
 			createData(dbpediaCompanyNode, nytimesCompanyNode, i + 1);
@@ -70,7 +70,7 @@ public class ArtificialDataGenerator {
 		} else if (count > 4000 && count <= 5000) {
 			reputation = Constants.VERY_LOW;
 		} else {
-			reputation = Constants.VERY_HIGH;
+			reputation = Constants.ELITE;
 		}
 		return reputation;
 	}
@@ -124,8 +124,13 @@ public class ArtificialDataGenerator {
 		int shares = getRandomNumber(10, 200) * trades;
 		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_TRADES_NODE, NodeFactory.intToNode(trades)));
 		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_SHARES_NODE, NodeFactory.intToNode(shares)));
-		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_VALUECHANGE_NODE, NodeFactory.floatToNode(0)));
-		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_CHANGEPERCENT_NODE, NodeFactory.floatToNode(0)));
+		float valueChange=0,changePercent=0;
+		if(count>5000){
+			valueChange=getRandomNumber(10000,15000);
+			changePercent=getRandomNumber(5,10);
+		}
+		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_VALUECHANGE_NODE, NodeFactory.floatToNode(valueChange)));
+		stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_CHANGEPERCENT_NODE, NodeFactory.floatToNode(changePercent)));
 	}
 
 	private static void addStockMarketAndCurrency(Node nytimesCompanyNode, int count) {
