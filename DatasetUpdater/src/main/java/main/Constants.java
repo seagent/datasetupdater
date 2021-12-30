@@ -51,7 +51,11 @@ public class Constants {
 	public static final String VERY_LOW = "Very Low";
 	static int COMPANY_SIZE = 5000;
 
+	public static final Node AIRLINE_RSC_NODE = Node.createURI(Constants.DBPEDIA_RSC_PREFIX+"Airline");
 	public static final Node BANK_RSC_NODE = Node.createURI(Constants.DBPEDIA_RSC_PREFIX+"Bank");
+	public static final Node SOFTWARE_RSC_NODE = Node.createURI(Constants.DBPEDIA_RSC_PREFIX+"Software");
+	public static final Node ELECTRONICS_RSC_NODE = Node.createURI(Constants.DBPEDIA_RSC_PREFIX+"Electronics");
+	public static final Node HEALTH_CARE_RSC_NODE = Node.createURI(Constants.DBPEDIA_RSC_PREFIX+"Health_care");
 	public static final Node RESTAURANT_RSC_NODE = Node.createURI(Constants.DBPEDIA_RSC_PREFIX+"Restaurant");
 
 }

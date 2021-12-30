@@ -31,7 +31,7 @@ public class ArtificialDataGenerator {
 
     public static void main(String[] args) {
         logger.debug("Dataset creation has started.");
-        for (int i = 4900; i < 5000; i++) {
+        for (int i = 0; i < 500; i++) {
             Node dbpediaCompanyNode = createCompanyNode(Constants.DBPEDIA_RSC_PREFIX, i + 1);
             Node nytimesCompanyNode = createCompanyNode(Constants.NYTIMES_RSC_PREFIX, i + 1);
             createData(dbpediaCompanyNode, nytimesCompanyNode, i + 1);
@@ -47,15 +47,15 @@ public class ArtificialDataGenerator {
     }
 
     private static void createNytimesData(Node nytimesCompanyNode, int count) {
-        /*nytimesGraph.add(new Triple(nytimesCompanyNode, RDF.type.asNode(), Constants.NYTIMES_COMPANY_NODE));
+        nytimesGraph.add(new Triple(nytimesCompanyNode, RDF.type.asNode(), Constants.NYTIMES_COMPANY_NODE));
         nytimesGraph.add(new Triple(nytimesCompanyNode, RDFS.label.asNode(),
                 Node.createLiteral("Company-" + count, XSDDatatype.XSDstring)));
         nytimesGraph.add(new Triple(nytimesCompanyNode, Constants.ARTICLE_COUNT_NODE, Constants.ZERO_COUNT_NODE));
         nytimesGraph.add(new Triple(nytimesCompanyNode, Constants.NYTIMES_REPUTATION_NODE,
-                Node.createLiteral(getReputation(count), XSDDatatype.XSDstring)));*/
+                Node.createLiteral(getReputation(count), XSDDatatype.XSDstring)));
         addSecondaryReputation(nytimesCompanyNode, count);
-        /*Node wallStreetJournalNode = createCompanyNode(Constants.WALL_STREET_JOURNAL_RSC_PREFIX, count);
-        nytimesGraph.add(new Triple(nytimesCompanyNode, OWL.sameAs.asNode(), wallStreetJournalNode));*/
+        Node wallStreetJournalNode = createCompanyNode(Constants.WALL_STREET_JOURNAL_RSC_PREFIX, count);
+        nytimesGraph.add(new Triple(nytimesCompanyNode, OWL.sameAs.asNode(), wallStreetJournalNode));
     }
 
     private static void addSecondaryReputation(Node nytimesCompanyNode, int count) {
@@ -87,15 +87,23 @@ public class ArtificialDataGenerator {
     }
 
     private static void createDbpediaData(Node dbpediaCompanyNode, Node nytimesCompanyNode, int count) {
-        /*dbpediaGraph.add(new Triple(dbpediaCompanyNode, RDF.type.asNode(), Constants.DBPEDIA_COMPANY_CLS_NODE));
+        dbpediaGraph.add(new Triple(dbpediaCompanyNode, RDF.type.asNode(), Constants.DBPEDIA_COMPANY_CLS_NODE));
         dbpediaGraph.add(new Triple(dbpediaCompanyNode, RDFS.label.asNode(),
                 Node.createLiteral("Company-" + count, XSDDatatype.XSDstring)));
 
         dbpediaGraph.add(new Triple(dbpediaCompanyNode, Constants.DBPEDIA_NUMBER_OF_STAFF,
                 NodeFactory.intToNode(getStaffCount(count))));
-        dbpediaGraph.add(new Triple(dbpediaCompanyNode, OWL.sameAs.asNode(), nytimesCompanyNode));*/
-        if (count <= 500) {
+        dbpediaGraph.add(new Triple(dbpediaCompanyNode, OWL.sameAs.asNode(), nytimesCompanyNode));
+        if (count <= 100) {
             dbpediaGraph.add(new Triple(dbpediaCompanyNode, Constants.DBPEDIA_INDUSTRY_PRP_NODE, Constants.BANK_RSC_NODE));
+        } else if (count>100&&count <= 200) {
+            dbpediaGraph.add(new Triple(dbpediaCompanyNode, Constants.DBPEDIA_INDUSTRY_PRP_NODE, Constants.AIRLINE_RSC_NODE));
+        } else if (count>200&&count <= 300) {
+            dbpediaGraph.add(new Triple(dbpediaCompanyNode, Constants.DBPEDIA_INDUSTRY_PRP_NODE, Constants.SOFTWARE_RSC_NODE));
+        } else if (count>300&&count <= 400) {
+            dbpediaGraph.add(new Triple(dbpediaCompanyNode, Constants.DBPEDIA_INDUSTRY_PRP_NODE, Constants.ELECTRONICS_RSC_NODE));
+        } else if (count>400&&count <= 500) {
+            dbpediaGraph.add(new Triple(dbpediaCompanyNode, Constants.DBPEDIA_INDUSTRY_PRP_NODE, Constants.HEALTH_CARE_RSC_NODE));
         } else if (count > 4900 && count <= 5000) {
             dbpediaGraph.add(new Triple(dbpediaCompanyNode, Constants.DBPEDIA_INDUSTRY_PRP_NODE, Constants.RESTAURANT_RSC_NODE));
         }
@@ -131,7 +139,7 @@ public class ArtificialDataGenerator {
     }
 
     private static void createStockData(Node nytimesCompanyNode, int count) {
-        /*stockGraph.add(new Triple(nytimesCompanyNode, RDF.type.asNode(), Constants.STOCK_COMPANY_NODE));
+        stockGraph.add(new Triple(nytimesCompanyNode, RDF.type.asNode(), Constants.STOCK_COMPANY_NODE));
         addStockMarketAndCurrency(nytimesCompanyNode, count);
         int stockPrice = getRandomNumber(1, 500);
         stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_PRICE_NODE, NodeFactory.floatToNode(stockPrice)));
@@ -140,15 +148,27 @@ public class ArtificialDataGenerator {
         int trades = getRandomNumber(10, 250) * Math.round(stockPrice);
         int shares = getRandomNumber(10, 200) * trades;
         stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_TRADES_NODE, NodeFactory.intToNode(trades)));
-        stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_SHARES_NODE, NodeFactory.intToNode(shares)));*/
+        stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_SHARES_NODE, NodeFactory.intToNode(shares)));
         addValueChangeAndCurrency(nytimesCompanyNode, count);
     }
 
     private static void addValueChangeAndCurrency(Node nytimesCompanyNode, int count) {
         float valueChange = 0, changePercent = 0;
-        if (count <= 500) {
-            valueChange = getRandomNumber(20000, 70000);
-            changePercent = getRandomNumber(15, 20);
+        if (count <= 100) {
+            valueChange = getRandomNumber(60000, 69999);
+            changePercent = getRandomNumber(18, 20);
+        } else if (count>100 && count <= 200) {
+            valueChange = getRandomNumber(50000, 59999);
+            changePercent = getRandomNumber(15, 17);
+        } else if (count >200 && count <= 300) {
+            valueChange = getRandomNumber(40000, 49999);
+            changePercent = getRandomNumber(12, 14);
+        } else if (count >300 && count <= 400) {
+            valueChange = getRandomNumber(30000, 39999);
+            changePercent = getRandomNumber(9, 11);
+        } else if (count >400 && count <= 500) {
+            valueChange = getRandomNumber(20000, 29999);
+            changePercent = getRandomNumber(6, 8);
         } else if (count > 4900 && count <= 5000) {
             valueChange = getRandomNumber(1000, 5000);
             changePercent = getRandomNumber(1, 3);
