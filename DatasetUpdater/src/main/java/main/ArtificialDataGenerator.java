@@ -149,10 +149,10 @@ public class ArtificialDataGenerator {
         int shares = getRandomNumber(10, 200) * trades;
         stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_TRADES_NODE, NodeFactory.intToNode(trades)));
         stockGraph.add(new Triple(nytimesCompanyNode, Constants.STOCK_SHARES_NODE, NodeFactory.intToNode(shares)));
-        addValueChangeAndCurrency(nytimesCompanyNode, count);
+        addValueChangeAndChangePercent(nytimesCompanyNode, count);
     }
 
-    private static void addValueChangeAndCurrency(Node nytimesCompanyNode, int count) {
+    private static void addValueChangeAndChangePercent(Node nytimesCompanyNode, int count) {
         float valueChange = 0, changePercent = 0;
         if (count <= 100) {
             valueChange = getRandomNumber(60000, 69999);
